@@ -9,7 +9,7 @@ export default function Hero() {
 
       <div className="relative z-10 grid items-center gap-8 sm:grid-cols-2">
         <div className="space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-zinc-300">
+          <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-zinc-300" suppressHydrationWarning>
             <Megaphone className="h-4 w-4 text-[--accent]" />
             Son xəbər: Səhnədə yeni albom sədaları
           </div>
@@ -20,7 +20,7 @@ export default function Hero() {
             Xəbərlər, kliplər, intervyular və səhnə arxası hekayələr. Qaranlıq tonlar,
             bənövşəyi aksentlər və modern UI ilə tərtib olunmuş xəbər platforması.
           </p>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col gap-3 sm:flex-row" suppressHydrationWarning>
             <Link
               href="/news"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-[--accent] px-4 py-2 font-medium text-white shadow transition-colors hover:bg-[--accent-600]"
@@ -38,10 +38,19 @@ export default function Hero() {
           </div>
         </div>
         <div className="relative">
-          <div className="aspect-video w-full overflow-hidden rounded-xl border">
-            <div className="flex h-full items-center justify-center bg-linear-to-br from-black via-zinc-900 to-[--accent-700]">
-              <PlayCircle className="h-16 w-16 text-white/70" />
-            </div>
+          <div className="aspect-video w-full overflow-hidden rounded-xl border bg-black">
+            <video
+              className="h-full w-full object-cover"
+              controls
+              preload="none"
+              poster="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000&auto=format&fit=crop"
+            >
+              <source
+                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
           </div>
           <div className="pointer-events-none absolute -inset-2 rounded-xl bg-[--accent]/10 blur-lg" />
         </div>

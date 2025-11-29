@@ -19,7 +19,7 @@ export default function NewsletterForm() {
     <form onSubmit={onSubmit} className="group relative overflow-hidden rounded-xl border bg-[--color-card] p-2">
       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-[--color-accent]/30" />
       <div className="flex items-center gap-2">
-        <span className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-[--color-accent]/15 text-[--color-accent]">
+        <span className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-[--color-accent]/15 text-[--color-accent]" suppressHydrationWarning>
           <Mail className="h-4 w-4" />
         </span>
         <input

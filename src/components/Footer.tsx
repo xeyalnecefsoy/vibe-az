@@ -13,7 +13,7 @@ export default function Footer() {
           <NewsletterForm />
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 text-sm text-zinc-400 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 border-t pt-6 text-sm text-zinc-400 md:flex-row" suppressHydrationWarning>
           <p>© {new Date().getFullYear()} Vibe.az — Azerbaijani Rap News</p>
           <div className="flex items-center gap-4">
             <Link href="#" className="hover:text-[--color-accent]">Privacy</Link>

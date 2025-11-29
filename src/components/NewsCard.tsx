@@ -4,6 +4,7 @@ import Link from "next/link";
 export type NewsItem = {
   id: string;
   title: string;
+  slug: string;
   excerpt: string;
   image: string;
   tag?: string;
@@ -20,6 +21,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          suppressHydrationWarning
         />
         {item.tag ? (
           <span className="absolute left-3 top-3 rounded-full bg-[--color-accent]/90 px-2.5 py-1 text-xs font-medium text-white shadow">
@@ -35,7 +37,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         <div className="flex items-center justify-between text-xs text-zinc-500">
           <span>{item.date}</span>
           <Link
-            href={`/news/${item.id}`}
+            href={`/news/${item.slug}`}
             className="inline-flex cursor-pointer select-none items-center gap-1 rounded-md bg-[--color-accent]/15 px-2 py-1 font-medium text-[--color-accent] transition hover:bg-[--color-accent]/25 active:scale-95"
           >
             Read more

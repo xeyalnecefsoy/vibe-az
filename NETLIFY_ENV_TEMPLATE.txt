@@ -1,0 +1,8 @@
+# Netlify Production Environment Template
+# Set these in Netlify Dashboard: Site settings > Environment variables
+
+# Strapi API URL (your Railway app URL)
+NEXT_PUBLIC_STRAPI_URL=https://your-app.up.railway.app
+
+# Optional: Strapi API Token (generate in Strapi admin panel)
+# NEXT_PUBLIC_STRAPI_API_TOKEN=your-api-token-here

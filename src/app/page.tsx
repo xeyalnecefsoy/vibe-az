@@ -1,57 +1,41 @@
 import NewsCard, { type NewsItem } from "@/components/NewsCard";
 import Hero from "@/components/Hero";
+import { getNewsArticles, getStrapiImageUrl } from "@/lib/strapi";
 
-const mockNews: NewsItem[] = [
-  {
-    id: "1",
-    title: "Yeni albom: Baku Beats vol. 2 — yerli səhnədə səs-küy",
-    excerpt:
-      "Bakının ən istedadlı prodüserləri bir araya gəlib təzə sədalarla dolu kompilasiya təqdim etdilər.",
-    image:
-      "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop",
-    tag: "Release",
-    date: "11 Nov 2025",
-  },
-  {
-    id: "2",
-    title: "İntervyu: Gənc MC ilə şəhər ritmləri və lirika barədə söhbət",
-    excerpt:
-      "Rap səhnəsinin yüksələn ulduzu ilham mənbələri və gələcək planları haqqında danışdı.",
-    image:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop",
-    tag: "Interview",
-    date: "09 Nov 2025",
-  },
-  {
-    id: "3",
-    title: "Klip premyerası: Qaranlıq tonlarda güclü mesaj",
-    excerpt:
-      "Sənətçinin yeni klipi vizual estetika və hekayəçiliklə diqqət çəkir.",
-    image:
-      "https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?q=80&w=1200&auto=format&fit=crop",
-    tag: "Video",
-    date: "06 Nov 2025",
-  },
-  {
-    id: "4",
-    title: "Səhnə arxası: studiya prosesindən qeydlər",
-    excerpt:
-      "Prodüser komandası yazım prosesinin sirrlərini bölüşür.",
-    image:
-      "https://images.unsplash.com/photo-1461783420461-5e0eac4ac2f1?q=80&w=1200&auto=format&fit=crop",
-    tag: "Feature",
-    date: "03 Nov 2025",
-  },
-];
+export const revalidate = 60; // Revalidate every 60 seconds
 
-export default function Home() {
+export default async function Home() {
+  // Fetch news from Strapi
+  let news: NewsItem[] = [];
+  
+  try {
+    const strapiNews = await getNewsArticles({ limit: 4 });
+    news = strapiNews.map((article) => ({
+      id: article.id.toString(),
+      title: article.title,
+      slug: article.slug,
+      excerpt: article.excerpt,
+      image: getStrapiImageUrl(article.coverImage) || 
+             "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop",
+      tag: article.tag || undefined,
+      date: new Date(article.publishedAt).toLocaleDateString('az-AZ', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }),
+    }));
+  } catch (error) {
+    console.error('Failed to fetch news from Strapi:', error);
+    // Fallback to empty array if Strapi is unavailable
+  }
+
   return (
     <div className="space-y-8">
       <Hero />
       <section className="flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Son xəbərlər</h1>
-          <p className="mt-1 text-sm text-zinc-400">Azerbaycan rap səhnəsindən ən son yeniliklər</p>
+          <p className="mt-1 text-sm text-zinc-400">Azərbaycan rap səhnəsindən ən son yeniliklər</p>
         </div>
         <a
           href="/news"
@@ -62,9 +46,17 @@ export default function Home() {
       </section>
 
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {mockNews.map((n) => (
-          <NewsCard key={n.id} item={n} />
-        ))}
+        {news.length > 0 ? (
+          news.map((n) => (
+            <NewsCard key={n.id} item={n} />
+          ))
+        ) : (
+          <div className="col-span-full rounded-xl border bg-[--color-card] p-8 text-center">
+            <p className="text-zinc-400">
+              Hələ ki xəbər yoxdur. Strapi admin panelindən xəbər əlavə edin.
+            </p>
+          </div>
+        )}
       </section>
     </div>
   );

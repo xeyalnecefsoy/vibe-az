@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Environment variables (set these in Netlify dashboard)
+# NEXT_PUBLIC_STRAPI_URL = "https://your-app.up.railway.app"
+# NEXT_PUBLIC_STRAPI_API_TOKEN = "optional-api-token-from-strapi"
+
+# Redirect rules
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -50,8 +50,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[--color-background] text-[--color-foreground]`}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[--color-background] text-[--color-foreground]`}
+        suppressHydrationWarning
+      >
         <NavBar />
         <main className="mx-auto w-full max-w-6xl px-4 py-8 md:py-10">
           {children}

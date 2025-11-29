@@ -1,13 +1,23 @@
 import Link from "next/link";
 import { Mic2, Music2, Star, Users2, Crown, Radio } from "lucide-react";
+import { getArtists, getStrapiImageUrl, type Artist } from "@/lib/strapi";
 
-const artists = [
-  { name: "Northside MC", slug: "northside-mc", stat: "Yeni EP", icon: Music2 },
-  { name: "BakuFlow", slug: "bakuflow", stat: "Top single", icon: Star },
-  { name: "Qara Nota", slug: "qara-nota", stat: "Tour 2026", icon: Mic2 },
-];
+export const revalidate = 60;
 
-export default function ArtistsPage() {
+export default async function ArtistsPage() {
+  let artists: (Artist & { image: string })[] = [];
+  
+  try {
+    const strapiArtists = await getArtists({ limit: 100 });
+    artists = strapiArtists.map((artist) => ({
+      ...artist,
+      image: getStrapiImageUrl(artist.profileImage) || 
+             "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop",
+    }));
+  } catch (error) {
+    console.error('Failed to fetch artists:', error);
+  }
+
   return (
     <div className="space-y-6">
       <header>
@@ -16,24 +26,31 @@ export default function ArtistsPage() {
           Yerli səhnənin simaları, yeni çıxışlar və canlı performans xəbərdarlıqları.
         </p>
       </header>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {artists.map((a) => (
-          <li key={a.slug} className="flex items-center justify-between rounded-xl border bg-[--color-card] p-4">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-[--color-accent]/20 text-[--color-accent]">
-                <a.icon className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="font-medium">{a.name}</p>
-                <p className="text-sm text-zinc-400">{a.stat}</p>
+      
+      {artists.length > 0 ? (
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {artists.map((a) => (
+            <li key={a.slug} className="flex items-center justify-between rounded-xl border bg-[--color-card] p-4">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-[--color-accent]/20 text-[--color-accent]">
+                  <Music2 className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="font-medium">{a.name}</p>
+                  <p className="text-sm text-zinc-400">Artist</p>
+                </div>
               </div>
-            </div>
-            <Link href={`/artists/${a.slug}`} className="rounded-md bg-[--color-accent]/15 px-3 py-1.5 text-sm font-medium text-[--color-accent] transition hover:bg-[--color-accent]/25 active:scale-95">
-              Profilə bax
-            </Link>
-          </li>
-        ))}
-      </ul>
+              <Link href={`/artists/${a.slug}`} className="rounded-md bg-[--color-accent]/15 px-3 py-1.5 text-sm font-medium text-[--color-accent] transition hover:bg-[--color-accent]/25 active:scale-95">
+                Profilə bax
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="rounded-xl border bg-[--color-card] p-8 text-center text-zinc-400">
+          Hələ ki artist yoxdur. Strapi admin panelindən əlavə edin.
+        </div>
+      )}
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-xl border bg-[--color-card] p-4">

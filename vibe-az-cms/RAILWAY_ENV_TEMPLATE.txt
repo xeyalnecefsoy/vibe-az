@@ -1,0 +1,24 @@
+# Railway Production Environment Template for Strapi CMS
+# Copy this file and set actual values in Railway dashboard
+
+# Server Configuration
+HOST=0.0.0.0
+PORT=1337
+
+# Security Keys (Generate new ones using: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))")
+APP_KEYS=your-app-keys-here-generate-new-ones
+API_TOKEN_SALT=your-api-token-salt-here
+ADMIN_JWT_SECRET=your-admin-jwt-secret-here
+TRANSFER_TOKEN_SALT=your-transfer-token-salt-here
+JWT_SECRET=your-jwt-secret-here
+
+# Database (Railway automatically provides DATABASE_URL)
+DATABASE_CLIENT=postgres
+DATABASE_URL=${DATABASE_URL}
+
+# Public URL (Set to your Railway app URL)
+URL=https://your-app.up.railway.app
+STRAPI_ADMIN_BACKEND_URL=https://your-app.up.railway.app
+
+# Optional: API Token for frontend
+# STRAPI_API_TOKEN=generate-in-strapi-admin-panel
