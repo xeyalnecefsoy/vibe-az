@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getNewsArticleBySlug, getStrapiImageUrl } from "@/lib/strapi";
+import { marked } from "marked";
 
 export const revalidate = 60;
 
@@ -31,6 +32,11 @@ export default async function NewsDetailPage({
     year: 'numeric'
   });
 
+  // Convert markdown to HTML
+  const contentHtml = article.content 
+    ? await marked(article.content)
+    : article.excerpt || "";
+
   return (
     <article className="mx-auto max-w-3xl space-y-8">
       <header className="space-y-6 text-center">
@@ -53,6 +59,7 @@ export default async function NewsDetailPage({
             fill
             className="object-cover"
             priority
+            unoptimized
             sizes="(max-width: 1200px) 100vw, 800px"
           />
         </div>
@@ -60,7 +67,7 @@ export default async function NewsDetailPage({
 
       <div className="prose prose-invert mx-auto max-w-none prose-headings:text-zinc-100 prose-p:text-zinc-300 prose-a:text-[--color-accent] prose-strong:text-zinc-100">
         <p className="lead text-xl text-zinc-200">{article.excerpt}</p>
-        <div dangerouslySetInnerHTML={{ __html: article.content || article.excerpt || "" }} />
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </div>
     </article>
   );
